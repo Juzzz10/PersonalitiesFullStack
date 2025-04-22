@@ -1,6 +1,7 @@
 package com.enriquez.Personality;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,13 @@ public class PersonalityController {
         PersonalityRepository.save(artist);
 
         return "Artist with id: " + id + " updated.";
+    }
+
+    @PostMapping("/bulk")
+    public <Personalities> String addBulk(@RequestBody List<Personalities> bulkPersonalities) {
+        SimpleJpaRepository personalitiesRepository = null;
+        personalitiesRepository.saveAll(bulkPersonalities); // Save a list of personalities to the database
+        return "Added " + bulkPersonalities.size() + " personalities";
     }
 
     @DeleteMapping("/personalities/{id}")
